@@ -34,13 +34,13 @@ namespace PetStore
             string s = @"Data Source=DESKTOP-NOPJF0S\SQLEXPRESS;Initial Catalog=petDB;Integrated Security=True";
             DeleteCatId(s,id);
 
-            string conString = "";//Enter Database Link 
+            // string conString = "";//Enter Database Link 
 
             Console.WriteLine("Enter The Id to fetch Cat: ");
             int id = int.Parse(Console.ReadLine());
 
             // GetCatByIdDisArch(conString, id); // For the other function 
-            GetCatByIdDisArch(conString, $"SELECT * FROM Cats WHERE Id={id}"); 
+            GetCatByIdDisArch(s, $"SELECT * FROM Cats WHERE Id={id}"); 
 
         }
 
