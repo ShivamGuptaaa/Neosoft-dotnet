@@ -33,6 +33,15 @@ namespace PetStore
             int id = Int32.Parse(Console.ReadLine());
             string s = @"Data Source=DESKTOP-NOPJF0S\SQLEXPRESS;Initial Catalog=petDB;Integrated Security=True";
             DeleteCatId(s,id);
+
+            string conString = "";//Enter Database Link 
+
+            Console.WriteLine("Enter The Id to fetch Cat: ");
+            int id = int.Parse(Console.ReadLine());
+
+            // GetCatByIdDisArch(conString, id); // For the other function 
+            GetCatByIdDisArch(conString, $"SELECT * FROM Cats WHERE Id={id}"); 
+
         }
 
         private static void GetCats(string conString, string query= "SELECT Id, Name from Cats")
@@ -51,6 +60,25 @@ namespace PetStore
                 throw;
             }
         }
+
+        private static void GetCatByIdDisArch(string conStr, int id=0, string query = "SELECT * FROM Cats")
+        {
+            SqlConnection connection;
+            SqlDataAdapter adapter;
+            DataSet ds;
+            try
+            {
+                var cat = DisconnectedArchitecture.GetCatById(conStr, query, id, out connection, out adapter, out ds);
+                Console.WriteLine("Id: " + cat["id"] + "\nName: " + cat["name"] + "\nDOB: " + cat["Dob"]);
+                Console.WriteLine("\nLeg Length: " + cat["legLength"] + "\nRibCage: " + cat["ribcage"]);
+                Console.WriteLine("\nGender Id: " + cat["GenderId"] + "\nCat Type : " + cat["CatType"] + "\nFur: " + cat["FurType"]);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("No Records Found!");
+            }
+        }
+
         private static void UpdatCatName(string conStr, int id, string name)
         {
             SqlConnection connection;
