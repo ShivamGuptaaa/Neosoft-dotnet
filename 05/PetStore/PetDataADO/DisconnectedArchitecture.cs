@@ -26,37 +26,17 @@ namespace PetDataADO
             }
         }
 
-        //  We can do it in 2 ways 1st(commented) wil loop from whole dataset and 2nd will only get required row
-
-        /*public static DataRow GetCatById(string conStr, string query, int id, out SqlConnection connection, out SqlDataAdapter da, out DataSet ds)
+        public static DataRow GetCatById(string conStr, int id, out SqlConnection connection, out SqlDataAdapter da, out DataSet ds)
         {
             using (connection = new SqlConnection(conStr))
             {
-                da = new SqlDataAdapter(query, connection);
+                SqlCommand cmd;
+                da = new SqlDataAdapter();
                 ds = new DataSet();
-                int rows = da.Fill(ds, "Cats");
-                if (rows != 0)
-                {
-                    var cat = ds.Tables["Cats"].Rows;
-                    foreach (DataRow item in cat)
-                    {
-                        if (item["id"].ToString() == id.ToString())
-                        {
-                            return item;
-                        }
-                    }
-                }
-            }
-            return null;
-        }*/
-
-
-        public static DataRow GetCatById(string conStr, string query, int id, out SqlConnection connection, out SqlDataAdapter da, out DataSet ds)
-        {
-            using (connection = new SqlConnection(conStr))
-            {
-                da = new SqlDataAdapter(query, connection);
-                ds = new DataSet();
+                cmd = new SqlCommand("DA_GetCatById",connection);
+                cmd.Parameters.Add(new SqlParameter("@ID",id));
+                cmd.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand = cmd;
                 int rows = da.Fill(ds, "Cats");
                 if (rows != 0)
                 {
@@ -66,5 +46,6 @@ namespace PetDataADO
             }
             return null;
         }
+
     }
 }
