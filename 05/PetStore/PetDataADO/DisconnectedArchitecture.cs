@@ -46,6 +46,38 @@ namespace PetDataADO
             }
             return null;
         }
+        public static void DeleteCatByName(string conStr, string query, out SqlConnection connection, out SqlDataAdapter da, out DataSet ds, string name)
+        {
+            using (connection = new SqlConnection(conStr))
+            {
+                da = new SqlDataAdapter(query, connection);
+                ds = new DataSet();//to hold data from db
 
+                SqlCommandBuilder builder = new SqlCommandBuilder(da);
+                da.Fill(ds, "Cats");
+                var data = ds.Tables["Cats"].Rows;
+                foreach (DataRow row in data)
+                {
+                    if (row["Name"].ToString() == name)
+                    {
+                        row.Delete();
+                        Console.WriteLine("Deleting");
+                    }
+                }
+
+                try
+                {
+                    int result = da.Update(ds, "Cats");
+                    if (result > 0)
+                        Console.WriteLine("Success");
+                    else
+                        Console.WriteLine("Failed");
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
     }
 }

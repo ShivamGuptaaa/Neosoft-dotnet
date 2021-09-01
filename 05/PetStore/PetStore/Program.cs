@@ -12,13 +12,20 @@ namespace PetStore
     {
         static void Main(string[] args) // entry point
         {
-            /*var config = new ConfigurationBuilder()
+            var config = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appSettings.json")
                 .Build();
 
             string conString = config.GetConnectionString("PetDb");
-            GetCatsDisconnected(conString);*/
+            GetCatsDisconnected(conString);
+
+            Console.WriteLine("Enter Cat Name to be delete");
+            string name = Console.ReadLine();
+
+            string query = $"SELECT * from Cats";
+            DeleteCatByNameDisconnected(conString, query, name);
+            GetCatsDisconnected(conString);
             /*
              GetCats(conString);
 
@@ -28,21 +35,18 @@ namespace PetStore
              string name = Console.ReadLine();
              UpdatCatName(conString, id, name);
              GetCats(conString);*/
-
-            Console.Write("PLease enter the Id of the cat which you want to delete ");
-            int id = Int32.Parse(Console.ReadLine());
-            string s = @"Data Source=DESKTOP-NOPJF0S\SQLEXPRESS;Initial Catalog=petDB;Integrated Security=True";
-            DeleteCatId(s,id);
-
-            Console.WriteLine("Enter The Id to fetch Cat: ");
-            int id = int.Parse(Console.ReadLine());
-
-            // GetCatByIdDisArch(conString, id); // For the other function 
-            GetCatByIdDisArch(s, id); 
-
         }
 
-        private static void GetCats(string conString, string query= "SELECT Id, Name from Cats")
+        private static void DeleteCatByNameDisconnected(string conStr, string query, string name)
+        {
+            SqlConnection connection;
+            SqlDataAdapter adapter;
+            DataSet ds;
+            //string query=query;
+            DisconnectedArchitecture.DeleteCatByName(conStr, query, out connection, out adapter, out ds, name);
+        }
+
+        private static void GetCats(string conString, string query = "SELECT Id, Name from Cats")
         {
             SqlConnection connection;
             //2. Fire Sql Command
@@ -85,19 +89,12 @@ namespace PetStore
 
         }
 
-        private static void DeleteCatId(string conStr, int id)
+        private static void GetCatsDisconnected(string conStr, string query = "select Id, Name from Cats")
         {
-            SqlConnection connection;
-            SqlCommand command;
-            ConnectedArchitecture.DeleteCatById(conStr, out connection, out command, id);
-
-        }
-
-        private static void GetCatsDisconnected(string conStr, string query="select Id, Name from Cats") {
             SqlConnection connection;
             SqlDataAdapter adapter;
             DataSet ds;
-            var cats=DisconnectedArchitecture.GetCats(conStr, query, out connection, out adapter, out ds);
+            var cats = DisconnectedArchitecture.GetCats(conStr, query, out connection, out adapter, out ds);
             foreach (DataRow cat in cats)
             {
                 Console.WriteLine($"{cat["Id"]} {cat[1]}");
@@ -108,7 +105,7 @@ namespace PetStore
         /// </summary>
         private static PetLib.Cat AddCat()
         {
-            Cat pet1=new Cat();            
+            Cat pet1 = new Cat();
             Console.Write("Please enter your pet's Id: ");
             pet1.Id = int.Parse(Console.ReadLine());
             Console.Write("\nPlease enter your pet's name: ");
@@ -124,7 +121,7 @@ namespace PetStore
             else
                 Console.Write("Incorrect gender press <0> for male and press <1> for female");
             Console.Write(" Please enter the weight of your cat in pounds ");
-            pet1.Weight=Convert.ToDouble(Console.ReadLine());
+            pet1.Weight = Convert.ToDouble(Console.ReadLine());
             pet1.CatType = CatType.Himalayan;
             return pet1;
         }
