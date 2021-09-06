@@ -19,20 +19,16 @@
        - used for data manipulation and fast, forward-only, read-only access to data.
        - Various objects of this components are used to perform various duties:
          - **Connection** object provide connectivity to data source
-         - **Command** object enables connection to DB commands to *return data*, *modify data*, *run SP, send or retrieve parameters* <br>
-            +-----------------+--------------------------------------------------+
-            | Command         | Return Value                                     |
-            +-----------------+--------------------------------------------------+
-            | ExecuteReader   | Returns a DataReader object                      |
-            +-----------------+--------------------------------------------------+
-            | ExecuteScalar   | Returns a single scalar value                    |
-            +-----------------+--------------------------------------------------+
-            | ExecuteNonQuery | Executes a command that does not return any rows |
-            +-----------------+--------------------------------------------------+
+         - **Command** object enables connection to DB commands to *return data*, *modify data*, *run SP, send or retrieve parameters*           
+            - Command          - Return Value                                     
+            - ExecuteReader    - Returns a DataReader object                      
+            - ExecuteScalar    - Returns a single scalar value                    
+            - ExecuteNonQuery  - Executes a command that does not return any rows 
+            
          - **DataReader** object provides high performance stream of data from data source in *forward only* direction.
          - **DataAdapter** object provides *bridge* between **dataset** object and the data source. Data adapter uses **Command** object to execute the SQL commands ant the data source to load dataset.
 
-    1. [Dataset](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-datasets)
+    2. [Dataset](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-datasets)
         - its like mini database at client's end whicg can be used to perform db operations locally and then pushing this dataset to make changes to actual data source
         - Data set consists of 
           - DataTableCollection
